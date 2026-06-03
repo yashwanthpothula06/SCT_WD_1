@@ -1,513 +1,1124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Sticky Navigation</title>
-    
-    <!-- Importing a modern Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        
-        :root {
-            --purple-deep: #4c1d95;
-            --purple-1: #7C3AED;
-            --purple-2: #8B5CF6;
-            --purple-3: #A855F7;
-            --purple-light: #f3e8ff;
-            --text-main: #1f2937;
-            --text-light: #ffffff;
-            --bg-color: #faf5ff;
-            --glass-bg: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura - Next-Gen Workspace & Productivity Platform</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons for Beautiful Visuals -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            
-            scroll-behavior: smooth; 
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            color: var(--text-main);
-            background-color: var(--bg-color);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        
-        header {
-            position: fixed;
-            top: 20px; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            max-width: 1100px;
-            padding: 12px 30px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 50px; /* Pill shape */
-            z-index: 1000;
-            transition: var(--transition);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-        }
-
-        header.scrolled {
-            top: 10px;
-            width: 98%;
-            background: rgba(255, 255, 255, 0.85);
-            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.15); 
-            border-color: rgba(168, 85, 247, 0.3);
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--purple-1), var(--purple-3));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        header.scrolled .logo {
-            transform: scale(1.05);
-            text-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
-        }
-
-        
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 10px;
-            position: relative; 
-        }
-
-        .nav-item {
-            position: relative;
-        }
-
-        /* Sliding Navigation Indicator */
-        .nav-indicator {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background: linear-gradient(135deg, var(--purple-1), var(--purple-3));
-            border-radius: 30px;
-            z-index: 0;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
-            pointer-events: none; 
-            opacity: 0;
-        }
-
-        .nav-link {
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--text-main);
-            text-decoration: none;
-            padding: 8px 22px;
-            border-radius: 30px;
-            transition: var(--transition);
-            display: inline-block;
-            position: relative;
-            z-index: 1; 
-        }
-
-        
-        .nav-link:hover, .nav-link.active {
-            color: var(--text-light);
-            text-shadow: none;
-            transform: translateY(0);
-        }
-
-        
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            z-index: 100;
-        }
-
-        .bar {
-            display: block;
-            width: 25px;
-            height: 3px;
-            margin: 5px auto;
-            background: linear-gradient(135deg, var(--purple-1), var(--purple-3));
-            transition: all 0.3s ease-in-out;
-            border-radius: 3px;
-        }
-
-        
-        section {
-            min-height: 100vh;
-            padding: 120px 20px 60px; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        
-        .content-wrapper {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(12px);
-            padding: 60px 40px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.05);
-            transition: var(--transition);
-            max-width: 800px;
-            width: 100%;
-        }
-
-        
-        section:hover .content-wrapper {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 50px rgba(124, 58, 237, 0.15);
-            border-color: rgba(168, 85, 247, 0.4);
-            background: rgba(255, 255, 255, 0.7);
-        }
-
-        .section-title {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--purple-deep), var(--purple-2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: var(--transition);
-        }
-
-        section:hover .section-title {
-            text-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
-        }
-
-        .section-desc {
-            font-size: 1.2rem;
-            color: #4b5563;
-            transition: var(--transition);
-        }
-
-        
-        #home {
-            background: linear-gradient(135deg, var(--purple-light) 0%, #ffffff 100%);
-        }
-        
-        
-        #home::before {
-            content: '';
-            position: absolute;
-            top: 20%; left: 15%;
-            width: 400px; height: 400px;
-            background: var(--purple-3);
-            filter: blur(120px);
-            opacity: 0.15;
-            z-index: -1;
-            border-radius: 50%;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        #about { background: linear-gradient(135deg, #ffffff 0%, var(--purple-light) 100%); }
-        #services { background: linear-gradient(135deg, var(--purple-light) 0%, #ffffff 100%); }
-        #portfolio { background: linear-gradient(135deg, #ffffff 0%, var(--purple-light) 100%); }
-        
-        
-        #contact {
-            background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple-1) 100%);
-        }
-        #contact .content-wrapper {
-            background: rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-        #contact:hover .content-wrapper {
-            background: rgba(0, 0, 0, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-            border-color: rgba(168, 85, 247, 0.5);
-        }
-        #contact .section-title {
-            background: linear-gradient(135deg, #e9d5ff, #ffffff);
-            -webkit-background-clip: text;
-        }
-        #contact .section-desc { color: #e9d5ff; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-40px) scale(1.05); }
-        }
-
-        
-        @media (max-width: 768px) {
-            header {
-                width: 90%;
-                padding: 12px 20px;
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
             }
-            
-            
-            .nav-indicator {
-                display: none !important;
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-subtle': 'pulseSubtle 3s ease-in-out infinite',
+          },
+          keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.95)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-15px)' },
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: 1, transform: 'scale(1)' },
+              '50%': { opacity: 0.85, transform: 'scale(0.98)' },
             }
-
-            
-            .nav-link:hover {
-                color: var(--purple-1);
-                background: rgba(168, 85, 247, 0.1);
-                text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
-            }
-
-            .nav-link.active {
-                background: linear-gradient(135deg, var(--purple-1), var(--purple-3));
-                color: var(--text-light);
-                box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
-                text-shadow: none;
-            }
-            
-            header.scrolled {
-                width: 95%;
-            }
-
-            .hamburger {
-                display: block;
-                padding: 5px 10px; 
-                margin-right: -10px;
-            }
-
-            
-            .nav-menu {
-                position: absolute;
-                top: 100%; 
-                left: 0;
-                margin-top: 15px; 
-                transform: translateY(-15px); 
-                flex-direction: column;
-                background: rgba(255, 255, 255, 0.98); 
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                width: 100%;
-                border-radius: 25px;
-                padding: 20px;
-                box-shadow: 0 15px 40px rgba(124, 58, 237, 0.2);
-                border: 1px solid rgba(168, 85, 247, 0.3);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-                gap: 5px;
-            }
-
-            .nav-menu.active {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .nav-link {
-                display: block;
-                width: 100%;
-                text-align: center;
-                padding: 12px;
-                font-size: 1.1rem;
-            }
-
-            
-            .hamburger.active .bar:nth-child(2) { opacity: 0; }
-            .hamburger.active .bar:nth-child(1) {
-                transform: translateY(8px) rotate(45deg);
-                background: var(--purple-deep);
-            }
-            .hamburger.active .bar:nth-child(3) {
-                transform: translateY(-8px) rotate(-45deg);
-                background: var(--purple-deep);
-            }
-
-            .section-title { font-size: 2.5rem; }
-            .content-wrapper { padding: 40px 20px; }
+          }
         }
-    </style>
+      }
+    }
+  </script>
+
+  <style type="text/css">
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: #0b0f19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Custom Navbar underline animation */
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: #6366f1;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Active Nav Link styles */
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    /* Glassmorphic Navbar States */
+    .header-scrolled {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+      padding-top: 0.75rem !important;
+      padding-bottom: 0.75rem !important;
+    }
+    .dark .header-scrolled {
+      background-color: rgba(15, 23, 42, 0.8) !important;
+      border-color: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .light .header-scrolled {
+      background-color: rgba(255, 255, 255, 0.8) !important;
+      border-color: rgba(0, 0, 0, 0.05);
+    }
+  </style>
 </head>
-<body>
+<body class="font-sans antialiased bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
 
-    <!-- Header & Navigation -->
-    <header id="header">
-        <nav>
-            <a href="#home" class="logo">Brand.</a>
-            
-            <ul class="nav-menu">
-                <!-- Added sliding indicator element -->
-                <li class="nav-indicator" aria-hidden="true"></li>
-                
-                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
-                <li class="nav-item"><a href="#portfolio" class="nav-link">Portfolio</a></li>
-                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
+  <!-- Background Decorative Blobs -->
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-300 dark:bg-indigo-900/30 rounded-full filter blur-[100px] opacity-40 dark:opacity-30 animate-blob pointer-events-none -z-10"></div>
+  <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-300 dark:bg-purple-900/30 rounded-full filter blur-[100px] opacity-40 dark:opacity-30 animate-blob [animation-delay:2s] pointer-events-none -z-10"></div>
+  <div class="absolute top-2/3 left-1/3 w-96 h-96 bg-pink-300 dark:bg-pink-900/20 rounded-full filter blur-[100px] opacity-40 dark:opacity-20 animate-blob [animation-delay:4s] pointer-events-none -z-10"></div>
 
-            <!-- Mobile Hamburger Icon -->
-            <div class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </nav>
-    </header>
+  <!-- FIXED NAVIGATION BAR -->
+  <header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-transparent py-6">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#hero" class="flex items-center space-x-2 group">
+        <div class="w-10 h-10 bg-gradient-to-tr from-brand-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-extrabold shadow-lg shadow-brand-500/30 transition-transform duration-300 group-hover:scale-110">
+          <i class="fa-solid fa-cube text-lg"></i>
+        </div>
+        <span class="text-xl font-extrabold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent group-hover:opacity-90">
+          Aura
+        </span>
+      </a>
 
-    <!-- Sample Page Sections with Glassmorphism Wrappers -->
-    <main>
-        <section id="home">
-            <div class="content-wrapper">
-                <h1 class="section-title">Welcome Home</h1>
-                <p class="section-desc">Scroll down to see the pill-shaped navigation bar adapt smoothly and watch the purple gradient highlight automatically track your active section.</p>
-            </div>
-        </section>
+      <!-- Desktop Navigation Menu -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="#about" class="nav-link text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-white transition-colors">About</a>
+        <a href="#features" class="nav-link text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-white transition-colors">Features</a>
+        <a href="#services" class="nav-link text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-white transition-colors">Services</a>
+        <a href="#testimonials" class="nav-link text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-white transition-colors">Testimonials</a>
+        <a href="#contact" class="nav-link text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-white transition-colors">Contact</a>
+      </nav>
 
-        <section id="about">
-            <div class="content-wrapper">
-                <h2 class="section-title">About Us</h2>
-                <p class="section-desc">We combine premium glassmorphism effects with vibrant purple neon accents to create deeply immersive user experiences.</p>
-            </div>
-        </section>
+      <!-- Right Action Items (Theme Toggle & CTA) -->
+      <div class="hidden md:flex items-center space-x-4">
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all duration-200" aria-label="Toggle Theme">
+          <i id="theme-toggle-dark-icon" class="hidden fa-solid fa-moon text-md"></i>
+          <i id="theme-toggle-light-icon" class="hidden fa-solid fa-sun text-md"></i>
+        </button>
 
-        <section id="services">
-            <div class="content-wrapper">
-                <h2 class="section-title">Our Services</h2>
-                <p class="section-desc">Hover over this card to see the smooth scaling, shadow effects, and color transitions. Everything is crafted with pure CSS.</p>
-            </div>
-        </section>
+        <a href="#contact" class="px-5 py-2.5 bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-brand-600 dark:hover:bg-indigo-100 font-semibold rounded-xl text-sm shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+          Get Started
+        </a>
+      </div>
 
-        <section id="portfolio">
-            <div class="content-wrapper">
-                <h2 class="section-title">Our Portfolio</h2>
-                <p class="section-desc">Notice the menu highlight glowing at the top of the page. Our intersection observer tracks precisely where you are on the site.</p>
-            </div>
-        </section>
+      <!-- Mobile Menu Buttons (Hamburger + Theme Toggle) -->
+      <div class="flex items-center space-x-2 md:hidden">
+        <!-- Mobile Theme Toggle -->
+        <button id="mobile-theme-toggle" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 text-slate-600 dark:text-slate-300" aria-label="Toggle Theme Mobile">
+          <i id="mobile-theme-toggle-dark-icon" class="hidden fa-solid fa-moon"></i>
+          <i id="mobile-theme-toggle-light-icon" class="hidden fa-solid fa-sun"></i>
+        </button>
 
-        <section id="contact">
-            <div class="content-wrapper">
-                <h2 class="section-title">Contact Us</h2>
-                <p class="section-desc">Get in touch with us today. This dark variant completes the premium gradient design language, ensuring contrast and readability.</p>
-            </div>
-        </section>
-    </main>
+        <!-- Hamburger Icon -->
+        <button id="menu-btn" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 text-slate-600 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500" aria-label="Toggle Menu">
+          <svg class="w-6 h-6 transition-transform duration-300" id="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-    <!-- Vanilla JavaScript -->
-    <script>
-        // DOM Elements
-        const header = document.getElementById('header');
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const sections = document.querySelectorAll('section');
-        const indicator = document.querySelector('.nav-indicator');
-
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-2xl py-6 px-6 transition-all duration-300 ease-in-out">
+      <div class="flex flex-col space-y-4">
+        <a href="#about" class="mobile-nav-link text-base font-semibold text-slate-700 dark:text-slate-200 py-2 border-b border-slate-100 dark:border-slate-800/50">About</a>
+        <a href="#features" class="mobile-nav-link text-base font-semibold text-slate-700 dark:text-slate-200 py-2 border-b border-slate-100 dark:border-slate-800/50">Features</a>
+        <a href="#services" class="mobile-nav-link text-base font-semibold text-slate-700 dark:text-slate-200 py-2 border-b border-slate-100 dark:border-slate-800/50">Services</a>
+        <a href="#testimonials" class="mobile-nav-link text-base font-semibold text-slate-700 dark:text-slate-200 py-2 border-b border-slate-100 dark:border-slate-800/50">Testimonials</a>
+        <a href="#contact" class="mobile-nav-link text-base font-semibold text-slate-700 dark:text-slate-200 py-2">Contact</a>
         
-        function moveIndicator(link) {
-            if (!link || window.innerWidth <= 768) return; 
+        <a href="#contact" class="mobile-nav-link block w-full text-center px-5 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl text-sm shadow-md transition-all">
+          Get Started Today
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="hero" class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Text / CTA Block -->
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-indigo-200 bg-indigo-50/60 dark:border-indigo-900/50 dark:bg-indigo-950/40 text-brand-600 dark:text-indigo-400 font-semibold text-xs tracking-wide uppercase">
+          <span class="flex h-2.5 w-2.5 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
+          </span>
+          <span>Introducing Aura Suite 3.0</span>
+        </div>
+        
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.1] text-slate-900 dark:text-white">
+          The Workspace That <br>
+          <span class="bg-gradient-to-r from-brand-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Empowers Your Team</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto lg:mx-0">
+          Unite your files, communication, analytics, and automation in a beautiful, single workspace. Experience work that is 10x faster and collaborative by design.
+        </p>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+          <a href="#contact" class="w-full sm:w-auto text-center px-8 py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-2xl shadow-xl shadow-brand-500/20 hover:shadow-brand-500/35 hover:-translate-y-0.5 transition-all duration-200">
+            Start Free Trial <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+          </a>
+          <a href="#features" class="w-full sm:w-auto text-center px-8 py-4 bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-2xl transition-all duration-200">
+            See Features
+          </a>
+        </div>
+
+        <!-- Mini Stats or Social Proof -->
+        <div class="pt-8 border-t border-slate-200/50 dark:border-slate-800/40 flex flex-wrap items-center justify-center lg:justify-start gap-y-4 gap-x-8 text-sm text-slate-500 dark:text-slate-400">
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-check text-brand-500"></i>
+            <span>No Credit Card Required</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-check text-brand-500"></i>
+            <span>Flexible Cancel Anytime</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-star text-amber-500"></i>
+            <span>4.9/5 G2 Rating</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Interactive Hero Graphic -->
+      <div class="lg:col-span-5 relative mt-8 lg:mt-0">
+        <div class="relative mx-auto max-w-md lg:max-w-none animate-float">
+          <!-- Main Hero Device Simulation -->
+          <div class="relative bg-gradient-to-tr from-slate-900 to-slate-950 p-3 rounded-3xl shadow-2xl shadow-slate-950/50 border border-slate-800">
+            <!-- Simulated App Interface -->
+            <div class="bg-slate-950 rounded-[20px] overflow-hidden aspect-[4/3] p-4 flex flex-col justify-between text-white select-none">
+              <!-- Window header -->
+              <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+                <div class="flex items-center space-x-2">
+                  <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                  <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                  <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                </div>
+                <div class="px-3 py-0.5 rounded bg-slate-900 text-[10px] text-slate-400 font-mono tracking-wide">aura.io/dashboard</div>
+                <i class="fa-solid fa-plus text-slate-500 text-xs"></i>
+              </div>
+              
+              <!-- Inside simulated dashboard -->
+              <div class="flex-1 grid grid-cols-3 gap-3">
+                <div class="col-span-1 bg-slate-900/50 p-2.5 rounded-xl border border-slate-800/60 flex flex-col justify-between">
+                  <div>
+                    <div class="w-6 h-6 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-2">
+                      <i class="fa-solid fa-chart-line text-xs"></i>
+                    </div>
+                    <span class="text-[9px] text-slate-400 uppercase tracking-wider block">Growth</span>
+                    <span class="text-sm font-bold block mt-0.5">+142%</span>
+                  </div>
+                  <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-indigo-500 h-full w-[80%] rounded-full"></div>
+                  </div>
+                </div>
+
+                <div class="col-span-2 bg-gradient-to-br from-indigo-900/20 to-purple-900/20 p-2.5 rounded-xl border border-indigo-500/25 flex flex-col justify-between">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <span class="text-[9px] text-indigo-300 uppercase tracking-wider block">Monthly Budget</span>
+                      <span class="text-md font-extrabold mt-0.5">$38,240.00</span>
+                    </div>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-semibold">Active</span>
+                  </div>
+                  <div class="flex space-x-1 items-end h-8">
+                    <div class="bg-indigo-500/30 w-full h-[40%] rounded-sm"></div>
+                    <div class="bg-indigo-500/50 w-full h-[65%] rounded-sm"></div>
+                    <div class="bg-indigo-500/20 w-full h-[30%] rounded-sm"></div>
+                    <div class="bg-indigo-500 w-full h-[90%] rounded-sm"></div>
+                  </div>
+                </div>
+
+                <div class="col-span-3 bg-slate-900/50 p-3 rounded-xl border border-slate-800/60 flex items-center justify-between">
+                  <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                      <i class="fa-solid fa-users text-xs"></i>
+                    </div>
+                    <div>
+                      <h4 class="text-[11px] font-bold">Collaborators active</h4>
+                      <p class="text-[9px] text-slate-400">7 members online</p>
+                    </div>
+                  </div>
+                  <div class="flex -space-x-2 overflow-hidden">
+                    <div class="inline-block h-6 w-6 rounded-full ring-2 ring-slate-900 bg-brand-500 text-[8px] font-bold flex items-center justify-center">JD</div>
+                    <div class="inline-block h-6 w-6 rounded-full ring-2 ring-slate-900 bg-purple-500 text-[8px] font-bold flex items-center justify-center">MK</div>
+                    <div class="inline-block h-6 w-6 rounded-full ring-2 ring-slate-900 bg-pink-500 text-[8px] font-bold flex items-center justify-center">AP</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Decorative Floating Element 1 -->
+          <div class="absolute -top-6 -right-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-2xl shadow-xl flex items-center space-x-3 max-w-[180px] animate-pulse-subtle">
+            <div class="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-950/50 flex items-center justify-center text-green-600 dark:text-green-400">
+              <i class="fa-solid fa-circle-check text-lg"></i>
+            </div>
+            <div>
+              <span class="text-[11px] text-slate-400 block font-medium">Task Complete</span>
+              <span class="text-xs font-bold text-slate-800 dark:text-white block">Aura SEO Setup</span>
+            </div>
+          </div>
+
+          <!-- Decorative Floating Element 2 -->
+          <div class="absolute -bottom-6 -left-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-xl flex items-center space-x-3 animate-pulse-subtle [animation-delay:1.5s]">
+            <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-950/50 flex items-center justify-center text-purple-600 dark:text-purple-400">
+              <i class="fa-solid fa-chart-pie text-lg"></i>
+            </div>
+            <div>
+              <span class="text-xs font-extrabold text-slate-800 dark:text-white block">Speed increased</span>
+              <span class="text-[10px] text-emerald-500 font-semibold block"><i class="fa-solid fa-caret-up mr-0.5"></i> 98% Perf Rating</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LOGO STRIP / PARTNERS -->
+  <section class="border-y border-slate-200/60 dark:border-slate-800/40 bg-slate-100/40 dark:bg-slate-900/10 py-10">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <p class="text-center text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-8">Trusted by industry-defining brands</p>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-items-center opacity-60 dark:opacity-40">
+        <div class="hover:opacity-100 transition duration-200 text-slate-700 dark:text-slate-300 font-bold text-lg flex items-center gap-2"><i class="fa-brands fa-stripe text-3xl"></i> Stripe</div>
+        <div class="hover:opacity-100 transition duration-200 text-slate-700 dark:text-slate-300 font-bold text-lg flex items-center gap-2"><i class="fa-brands fa-slack text-3xl"></i> Slack</div>
+        <div class="hover:opacity-100 transition duration-200 text-slate-700 dark:text-slate-300 font-bold text-lg flex items-center gap-2"><i class="fa-brands fa-figma text-2xl"></i> Figma</div>
+        <div class="hover:opacity-100 transition duration-200 text-slate-700 dark:text-slate-300 font-bold text-lg flex items-center gap-2"><i class="fa-brands fa-spotify text-3xl"></i> Spotify</div>
+        <div class="hover:opacity-100 transition duration-200 text-slate-700 dark:text-slate-300 font-bold text-lg flex items-center gap-2"><i class="fa-brands fa-github text-3xl"></i> Github</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section id="about" class="py-20 md:py-32">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <!-- Visual Column -->
+        <div class="relative order-2 lg:order-1">
+          <div class="aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-2xl relative group bg-gradient-to-tr from-brand-500 to-purple-600 p-1">
+            <div class="w-full h-full bg-slate-900/90 dark:bg-slate-900 rounded-xl overflow-hidden p-6 md:p-8 flex flex-col justify-between">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <h4 class="text-white font-bold text-sm">Performance Benchmark</h4>
+                <span class="text-xs text-brand-400 font-semibold">Updated 5m ago</span>
+              </div>
+              
+              <!-- Simulated graph content -->
+              <div class="space-y-4 my-6">
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
+                    <span>Aura Platform Performance</span>
+                    <span class="text-emerald-400">99.8%</span>
+                  </div>
+                  <div class="w-full bg-slate-800 h-2 rounded-full">
+                    <div class="bg-gradient-to-r from-brand-500 to-purple-500 h-full w-[99.8%] rounded-full"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-slate-400 mb-1">
+                    <span>Legacy Workspaces</span>
+                    <span class="text-red-400">54.2%</span>
+                  </div>
+                  <div class="w-full bg-slate-800 h-2 rounded-full">
+                    <div class="bg-red-500 h-full w-[54.2%] rounded-full"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-slate-400 mb-1">
+                    <span>Average Internal Dashboards</span>
+                    <span class="text-yellow-400">72.1%</span>
+                  </div>
+                  <div class="w-full bg-slate-800 h-2 rounded-full">
+                    <div class="bg-yellow-500 h-full w-[72.1%] rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Extra statistics block -->
+              <div class="grid grid-cols-3 gap-4 border-t border-slate-800 pt-4">
+                <div>
+                  <span class="block text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Loading speed</span>
+                  <span class="block text-lg font-extrabold text-white">0.24s</span>
+                </div>
+                <div>
+                  <span class="block text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Reliability</span>
+                  <span class="block text-lg font-extrabold text-white">99.99%</span>
+                </div>
+                <div>
+                  <span class="block text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Team savings</span>
+                  <span class="block text-lg font-extrabold text-white">14h/wk</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Copy Column -->
+        <div class="space-y-6 order-1 lg:order-2">
+          <span class="text-sm font-extrabold tracking-widest uppercase text-brand-500">Who We Are</span>
+          <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
+            We build tools that feel like magic and operate with peak speed.
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 text-md leading-relaxed">
+            Our mission is simple: to dissolve the friction between thinking and doing. By combining standard documentation, fast database tools, cloud computing, and beautiful analytics, we give modern development and design teams their superpower back.
+          </p>
+          <p class="text-slate-600 dark:text-slate-300 text-md leading-relaxed">
+            Aura was founded by builders who were tired of switching between 12 different tools daily to monitor, organize, and build operations. We centralized the essential mechanisms of growth so you can scale without boundaries.
+          </p>
+
+          <div class="pt-4 grid grid-cols-2 gap-6">
+            <div class="flex items-start space-x-3">
+              <div class="p-2 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl text-brand-500">
+                <i class="fa-solid fa-award text-lg"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 dark:text-white text-sm">Award-Winning UI</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Easiest to adopt system across diverse work groups.</p>
+              </div>
+            </div>
             
-            const linkRect = link.getBoundingClientRect();
-            const menuRect = navMenu.getBoundingClientRect();
-            
-            indicator.style.width = `${linkRect.width}px`;
-            indicator.style.transform = `translateX(${linkRect.left - menuRect.left}px)`;
-            indicator.style.opacity = '1';
+            <div class="flex items-start space-x-3">
+              <div class="p-2 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl text-brand-500">
+                <i class="fa-solid fa-shield-halved text-lg"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 dark:text-white text-sm">Enterprise Security</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">SAML Single Sign-On and SOC2 Compliance verified.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section id="features" class="py-20 md:py-32 bg-slate-100/60 dark:bg-slate-900/30">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <span class="text-sm font-extrabold tracking-widest uppercase text-brand-500">Built to Perform</span>
+        <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight">
+          Everything You Need to Scale Operations
+        </h2>
+        <p class="text-slate-600 dark:text-slate-300 text-md">
+          Say goodbye to complex plugins and high maintenance. Aura is carefully tuned for modern operational standards.
+        </p>
+      </div>
+
+      <!-- Feature Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- Feature 1 -->
+        <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 hover:border-brand-500 dark:hover:border-brand-500/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-brand-500 mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-bolt text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Lightning Analytics</h3>
+          <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+            Gain immediate insights with real-time stream processing. Monitor usage, logs, and conversions with sub-second latency.
+          </p>
+          <a href="#about" class="inline-flex items-center text-xs font-bold text-brand-500 hover:text-brand-600 mt-6 group/link">
+            Learn more <i class="fa-solid fa-chevron-right ml-1 text-[10px] group-hover/link:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 hover:border-brand-500 dark:hover:border-brand-500/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-brand-500 mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-lock text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">End-to-End Privacy</h3>
+          <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+            Full compliance control over your regional records with modern zero-knowledge structures. Rest easy knowing databases are fully partitioned.
+          </p>
+          <a href="#about" class="inline-flex items-center text-xs font-bold text-brand-500 hover:text-brand-600 mt-6 group/link">
+            Learn more <i class="fa-solid fa-chevron-right ml-1 text-[10px] group-hover/link:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 hover:border-brand-500 dark:hover:border-brand-500/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-brand-500 mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-puzzle-piece text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Modular Architecture</h3>
+          <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+            Tailor blocks of tasks, documents, and lists to match unique flows. Extend integrations with simple custom webhooks.
+          </p>
+          <a href="#about" class="inline-flex items-center text-xs font-bold text-brand-500 hover:text-brand-600 mt-6 group/link">
+            Learn more <i class="fa-solid fa-chevron-right ml-1 text-[10px] group-hover/link:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 hover:border-brand-500 dark:hover:border-brand-500/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-brand-500 mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-clock text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Sync in Real-time</h3>
+          <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+            Collaborate on documents, system plans, and code files simultaneously. Built-in conflict resolution keeps data intact.
+          </p>
+          <a href="#about" class="inline-flex items-center text-xs font-bold text-brand-500 hover:text-brand-600 mt-6 group/link">
+            Learn more <i class="fa-solid fa-chevron-right ml-1 text-[10px] group-hover/link:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 hover:border-brand-500 dark:hover:border-brand-500/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-brand-500 mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Cognitive Assistant</h3>
+          <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+            Summarize databases, drafting templates, and forecasting reports. Help teams do more with an inline conversational assistant.
+          </p>
+          <a href="#about" class="inline-flex items-center text-xs font-bold text-brand-500 hover:text-brand-600 mt-6 group/link">
+            Learn more <i class="fa-solid fa-chevron-right ml-1 text-[10px] group-hover/link:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="group bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 hover:border-brand-500 dark:hover:border-brand-500/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-brand-500 mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-brain text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Self-Healing API</h3>
+          <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+            Integrate without headaches. Schema-matching mechanics adjust configurations and minimize manual schema fixes automatically.
+          </p>
+          <a href="#about" class="inline-flex items-center text-xs font-bold text-brand-500 hover:text-brand-600 mt-6 group/link">
+            Learn more <i class="fa-solid fa-chevron-right ml-1 text-[10px] group-hover/link:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES SECTION -->
+  <section id="services" class="py-20 md:py-32">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-12 mb-16">
+        <div class="max-w-2xl space-y-4">
+          <span class="text-sm font-extrabold tracking-widest uppercase text-brand-500">What we optimize</span>
+          <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white">Our Signature Services</h2>
+          <p class="text-slate-600 dark:text-slate-300 text-md">
+            We do more than build. We configure modern structures to fit your distinct enterprise architecture seamlessly.
+          </p>
+        </div>
+        <div class="flex-shrink-0">
+          <a href="#contact" class="inline-block px-6 py-3 bg-indigo-50 dark:bg-slate-900 text-brand-600 dark:text-white hover:bg-brand-500 hover:text-white dark:hover:bg-brand-600 border border-indigo-100 dark:border-slate-800 font-bold rounded-xl text-sm transition-all duration-200">
+            Schedule Architecture Review
+          </a>
+        </div>
+      </div>
+
+      <!-- Services List -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Service Card 1 -->
+        <div class="bg-gradient-to-b from-slate-100/50 to-slate-100/10 dark:from-slate-900/50 dark:to-slate-900/10 p-8 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between h-96">
+          <div>
+            <span class="text-xs font-bold text-indigo-500 uppercase tracking-widest">Aura Build</span>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-2 mb-4">Enterprise Deployments</h3>
+            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+              We design and coordinate full-scale cloud environments for multi-tenant structures. Our custom deployments are built with reliability and uptime metrics first.
+            </p>
+          </div>
+          <div class="border-t border-slate-200 dark:border-slate-800/50 pt-4 flex items-center justify-between">
+            <span class="text-xs text-slate-400 font-semibold">Done-for-you service</span>
+            <i class="fa-solid fa-arrow-right-long text-brand-500"></i>
+          </div>
+        </div>
+
+        <!-- Service Card 2 -->
+        <div class="bg-gradient-to-b from-slate-100/50 to-slate-100/10 dark:from-slate-900/50 dark:to-slate-900/10 p-8 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between h-96">
+          <div>
+            <span class="text-xs font-bold text-indigo-500 uppercase tracking-widest">Aura Advisory</span>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-2 mb-4">Flow Optimization</h3>
+            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+              Unblock internal process logjams. We audit your existing SaaS spending and data flow pipelines to eliminate dead-ends, cutting operational waste by average 35%.
+            </p>
+          </div>
+          <div class="border-t border-slate-200 dark:border-slate-800/50 pt-4 flex items-center justify-between">
+            <span class="text-xs text-slate-400 font-semibold">Audit & Planning</span>
+            <i class="fa-solid fa-arrow-right-long text-brand-500"></i>
+          </div>
+        </div>
+
+        <!-- Service Card 3 -->
+        <div class="bg-gradient-to-b from-slate-100/50 to-slate-100/10 dark:from-slate-900/50 dark:to-slate-900/10 p-8 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between h-96 md:col-span-2 lg:col-span-1">
+          <div>
+            <span class="text-xs font-bold text-indigo-500 uppercase tracking-widest">Aura Custom</span>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-2 mb-4">Automations Engine</h3>
+            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+              Our engineering team builds tailored integrations, API hooks, and data parsers, transforming manual workflows into background logic loops that trigger instantly.
+            </p>
+          </div>
+          <div class="border-t border-slate-200 dark:border-slate-800/50 pt-4 flex items-center justify-between">
+            <span class="text-xs text-slate-400 font-semibold">Custom development</span>
+            <i class="fa-solid fa-arrow-right-long text-brand-500"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS SECTION -->
+  <section id="testimonials" class="py-20 md:py-32 bg-slate-100/60 dark:bg-slate-900/30 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <span class="text-sm font-extrabold tracking-widest uppercase text-brand-500">Customer Love</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white">
+          Why Top Performers Partner with Aura
+        </h2>
+      </div>
+
+      <!-- Testimonial Slider Wrapper -->
+      <div class="relative max-w-4xl mx-auto">
+        <!-- Slides -->
+        <div id="testimonial-container" class="relative overflow-hidden min-h-[320px] sm:min-h-[260px]">
+          
+          <!-- Slide 1 -->
+          <div class="testimonial-slide absolute top-0 left-0 w-full opacity-100 transform translate-x-0 transition-all duration-500 ease-in-out">
+            <div class="bg-white dark:bg-slate-900 p-8 md:p-12 rounded-3xl border border-slate-200/60 dark:border-slate-800/60 shadow-lg text-center md:text-left flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
+              <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-brand-500 to-indigo-600 flex-shrink-0 flex items-center justify-center text-white font-black text-2xl shadow-md">
+                AM
+              </div>
+              <div class="space-y-4">
+                <div class="text-amber-500 flex justify-center md:justify-start gap-1">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-slate-600 dark:text-slate-300 text-lg italic leading-relaxed">
+                  "Our design team can work together synchronously with near zero delays. Moving from a collection of legacy apps to Aura saved us 12 hours a week per team member. Unbeatable."
+                </p>
+                <div>
+                  <h4 class="font-extrabold text-slate-900 dark:text-white">Alisha Martinez</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Lead Product Designer, DesignCraft</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="testimonial-slide absolute top-0 left-0 w-full opacity-0 transform translate-x-full transition-all duration-500 ease-in-out">
+            <div class="bg-white dark:bg-slate-900 p-8 md:p-12 rounded-3xl border border-slate-200/60 dark:border-slate-800/60 shadow-lg text-center md:text-left flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
+              <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex-shrink-0 flex items-center justify-center text-white font-black text-2xl shadow-md">
+                DH
+              </div>
+              <div class="space-y-4">
+                <div class="text-amber-500 flex justify-center md:justify-start gap-1">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-slate-600 dark:text-slate-300 text-lg italic leading-relaxed">
+                  "The analytics suite in Aura gave us instantly readable user funnels. It replaced our external pipeline cleanly, saving us thousands of dollars a month. Phenomenal customer support."
+                </p>
+                <div>
+                  <h4 class="font-extrabold text-slate-900 dark:text-white">David Harrison</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Head of Ops, Apex Solutions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="testimonial-slide absolute top-0 left-0 w-full opacity-0 transform translate-x-full transition-all duration-500 ease-in-out">
+            <div class="bg-white dark:bg-slate-900 p-8 md:p-12 rounded-3xl border border-slate-200/60 dark:border-slate-800/60 shadow-lg text-center md:text-left flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
+              <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-purple-500 to-pink-600 flex-shrink-0 flex items-center justify-center text-white font-black text-2xl shadow-md">
+                SC
+              </div>
+              <div class="space-y-4">
+                <div class="text-amber-500 flex justify-center md:justify-start gap-1">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-slate-600 dark:text-slate-300 text-lg italic leading-relaxed">
+                  "Deploying an enterprise database on top of their partitioned APIs took less than half a day. It is highly resilient, secure, and fits our team workflow perfectly."
+                </p>
+                <div>
+                  <h4 class="font-extrabold text-slate-900 dark:text-white">Sarah Cole</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">VP of Tech, ByteLogix</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Slider Controls -->
+        <div class="flex items-center justify-center gap-4 mt-8">
+          <button id="prev-test" class="w-12 h-12 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 hover:bg-brand-500 dark:hover:bg-brand-500 hover:text-white dark:hover:text-white flex items-center justify-center transition-all duration-200 focus:outline-none" aria-label="Previous Testimonial">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          
+          <div class="flex space-x-1.5" id="slide-indicators">
+            <span class="indicator w-2.5 h-2.5 rounded-full bg-brand-500 cursor-pointer"></span>
+            <span class="indicator w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 cursor-pointer"></span>
+            <span class="indicator w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 cursor-pointer"></span>
+          </div>
+
+          <button id="next-test" class="w-12 h-12 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 hover:bg-brand-500 dark:hover:bg-brand-500 hover:text-white dark:hover:text-white flex items-center justify-center transition-all duration-200 focus:outline-none" aria-label="Next Testimonial">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="py-20 md:py-32">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <!-- Copy Column -->
+        <div class="lg:col-span-5 space-y-6">
+          <span class="text-sm font-extrabold tracking-widest uppercase text-brand-500">Get in Touch</span>
+          <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
+            Ready to Build With Aura? Let's Talk.
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+            Fill out the form and a workspace architecture specialist will respond within 2 hours to help optimize your workflow plan.
+          </p>
+
+          <div class="space-y-4 pt-4">
+            <div class="flex items-center space-x-4">
+              <div class="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-brand-500 flex items-center justify-center">
+                <i class="fa-solid fa-envelope text-lg"></i>
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 block font-semibold uppercase">Email Us</span>
+                <span class="text-sm font-bold text-slate-700 dark:text-slate-200">hello@aura.io</span>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+              <div class="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-brand-500 flex items-center justify-center">
+                <i class="fa-solid fa-phone text-lg"></i>
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 block font-semibold uppercase">Call Us</span>
+                <span class="text-sm font-bold text-slate-700 dark:text-slate-200">+1 (555) 234-5678</span>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+              <div class="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-brand-500 flex items-center justify-center">
+                <i class="fa-solid fa-location-dot text-lg"></i>
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 block font-semibold uppercase">Global HQ</span>
+                <span class="text-sm font-bold text-slate-700 dark:text-slate-200">San Francisco, CA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Column -->
+        <div class="lg:col-span-7 bg-white dark:bg-slate-900 p-8 md:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 shadow-xl relative">
+          
+          <!-- Success Notification (Hidden initially) -->
+          <div id="contact-success" class="hidden absolute inset-0 bg-white dark:bg-slate-900 rounded-3xl z-10 flex flex-col items-center justify-center p-8 text-center transition-all duration-300">
+            <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-950/50 text-emerald-500 rounded-2xl flex items-center justify-center text-3xl mb-4 animate-bounce">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Message Sent Successfully!</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-sm max-w-sm mb-6">
+              Thank you for reaching out. A systems expert from our Aura suite team will connect with you shortly.
+            </p>
+            <button id="reset-contact-btn" class="px-6 py-2.5 bg-brand-500 text-white font-bold rounded-xl text-sm hover:bg-brand-600 transition-colors">
+              Send another message
+            </button>
+          </div>
+
+          <!-- Contact Form -->
+          <form id="contact-form" class="space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label for="first-name" class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">First Name</label>
+                <input type="text" id="first-name" required class="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 dark:text-white text-sm rounded-xl outline-none transition-all duration-200" placeholder="John">
+              </div>
+              <div class="space-y-2">
+                <label for="last-name" class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Last Name</label>
+                <input type="text" id="last-name" required class="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 dark:text-white text-sm rounded-xl outline-none transition-all duration-200" placeholder="Doe">
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="email" class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Business Email</label>
+              <input type="email" id="email" required class="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 dark:text-white text-sm rounded-xl outline-none transition-all duration-200" placeholder="john.doe@company.com">
+            </div>
+
+            <div class="space-y-2">
+              <label for="company-size" class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Company Size</label>
+              <select id="company-size" class="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-700 dark:text-slate-300 text-sm rounded-xl outline-none transition-all duration-200">
+                <option value="1-10">1 - 10 Employees</option>
+                <option value="11-50">11 - 50 Employees</option>
+                <option value="51-200">51 - 200 Employees</option>
+                <option value="201+">201+ Employees</option>
+              </select>
+            </div>
+
+            <div class="space-y-2">
+              <label for="message" class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Message</label>
+              <textarea id="message" rows="4" required class="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 dark:text-white text-sm rounded-xl outline-none transition-all duration-200" placeholder="Tell us about your architectural goals..."></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-500/20 transition-all duration-200">
+              Submit Inquiry
+            </button>
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+      
+      <!-- Brand Block -->
+      <div class="lg:col-span-2 space-y-4">
+        <a href="#hero" class="flex items-center space-x-2 text-white font-extrabold text-xl">
+          <div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white text-sm">
+            <i class="fa-solid fa-cube"></i>
+          </div>
+          <span>Aura</span>
+        </a>
+        <p class="text-sm text-slate-400 max-w-sm">
+          A modern, unified platform designed to manage high-speed work modules, tasks, visual files, analytics, and automation sequences from a single screen.
+        </p>
+        <div class="flex space-x-4 pt-2">
+          <a href="#" class="hover:text-white transition duration-200" aria-label="Twitter"><i class="fa-brands fa-twitter text-lg"></i></a>
+          <a href="#" class="hover:text-white transition duration-200" aria-label="GitHub"><i class="fa-brands fa-github text-lg"></i></a>
+          <a href="#" class="hover:text-white transition duration-200" aria-label="LinkedIn"><i class="fa-brands fa-linkedin text-lg"></i></a>
+        </div>
+      </div>
+
+      <!-- Links Column 1 -->
+      <div>
+        <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Product</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#features" class="hover:text-white transition duration-200">Features</a></li>
+          <li><a href="#services" class="hover:text-white transition duration-200">Services</a></li>
+          <li><a href="#testimonials" class="hover:text-white transition duration-200">Integrations</a></li>
+          <li><a href="#" class="hover:text-white transition duration-200">Pricing Docs</a></li>
+        </ul>
+      </div>
+
+      <!-- Links Column 2 -->
+      <div>
+        <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Company</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#about" class="hover:text-white transition duration-200">About Us</a></li>
+          <li><a href="#" class="hover:text-white transition duration-200">Careers</a></li>
+          <li><a href="#" class="hover:text-white transition duration-200">Press Kit</a></li>
+          <li><a href="#contact" class="hover:text-white transition duration-200">Contact Team</a></li>
+        </ul>
+      </div>
+
+      <!-- Links Column 3 -->
+      <div>
+        <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Legal</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#" class="hover:text-white transition duration-200">Privacy Policy</a></li>
+          <li><a href="#" class="hover:text-white transition duration-200">Terms of Service</a></li>
+          <li><a href="#" class="hover:text-white transition duration-200">Security / SOC2</a></li>
+          <li><a href="#" class="hover:text-white transition duration-200">GDPR Compliance</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Copyright / Bottom Row -->
+    <div class="max-w-7xl mx-auto px-6 md:px-12 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <span>&copy; 2026 Aura Inc. All rights reserved. Built with precision.</span>
+      <div class="flex space-x-6">
+        <a href="#" class="hover:text-slate-400">Status Page</a>
+        <a href="#" class="hover:text-slate-400">Cookie Preferences</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT FOR INTERACTIVE LOGIC -->
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // --- THEME / DARK MODE TOGGLE ---
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
+      
+      const darkIcon = document.getElementById('theme-toggle-dark-icon');
+      const lightIcon = document.getElementById('theme-toggle-light-icon');
+      const mobileDarkIcon = document.getElementById('mobile-theme-toggle-dark-icon');
+      const mobileLightIcon = document.getElementById('mobile-theme-toggle-light-icon');
+      
+      // Determine initial theme status
+      if (localStorage.getItem('color-theme') === 'dark' || 
+          (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        darkIcon.classList.remove('hidden');
+        mobileDarkIcon.classList.remove('hidden');
+      } else {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+        lightIcon.classList.remove('hidden');
+        mobileLightIcon.classList.remove('hidden');
+      }
+
+      function toggleTheme() {
+        if (document.documentElement.classList.contains('dark')) {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+          localStorage.setItem('color-theme', 'light');
+          
+          darkIcon.classList.add('hidden');
+          mobileDarkIcon.classList.add('hidden');
+          lightIcon.classList.remove('hidden');
+          mobileLightIcon.classList.remove('hidden');
+        } else {
+          document.documentElement.classList.remove('light');
+          document.documentElement.classList.add('dark');
+          localStorage.setItem('color-theme', 'dark');
+          
+          lightIcon.classList.add('hidden');
+          mobileLightIcon.classList.add('hidden');
+          darkIcon.classList.remove('hidden');
+          mobileDarkIcon.classList.remove('hidden');
         }
+      }
 
-        
-        navLinks.forEach(link => {
-            link.addEventListener('mouseenter', (e) => {
-                moveIndicator(e.target);
-            });
+      themeToggleBtn.addEventListener('click', toggleTheme);
+      mobileThemeToggleBtn.addEventListener('click', toggleTheme);
+
+
+      // --- NAVBAR SCROLL EFFECT ---
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) {
+          navbar.classList.add('header-scrolled');
+        } else {
+          navbar.classList.remove('header-scrolled');
+        }
+        highlightNavOnScroll();
+      });
+
+
+      // --- MOBILE DRAWER HAMBURGER MENU ---
+      const menuBtn = document.getElementById('menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const hamburgerIcon = document.getElementById('hamburger-icon');
+      let isMenuOpen = false;
+
+      menuBtn.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        if (isMenuOpen) {
+          mobileMenu.classList.remove('hidden');
+          hamburgerIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>`;
+        } else {
+          mobileMenu.classList.add('hidden');
+          hamburgerIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>`;
+        }
+      });
+
+      // Close mobile menu when links are clicked
+      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+          hamburgerIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>`;
+          isMenuOpen = false;
         });
+      });
 
-        
-        navMenu.addEventListener('mouseleave', () => {
-            const activeLink = document.querySelector('.nav-link.active');
-            moveIndicator(activeLink);
-        });
-        
-        
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                const activeLink = document.querySelector('.nav-link.active');
-                moveIndicator(activeLink);
-            } else {
-                indicator.style.opacity = '0';
-            }
-        });
 
-        
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
+      // --- ACTIVE LINK HIGHLIGHTING ON SCROLL ---
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
 
-        
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
-            });
-        });
-
-        
-        const observerOptions = {
-            root: null,
-            rootMargin: '-50% 0px -50% 0px', 
-            threshold: 0
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const currentId = entry.target.getAttribute('id');
-                    
-                    
-                    navLinks.forEach(link => {
-                        link.classList.remove('active');
-                        
-                        if (link.getAttribute('href') === `#${currentId}`) {
-                            link.classList.add('active');
-                            moveIndicator(link); 
-                        }
-                    });
-                }
-            });
-        }, observerOptions);
-
-        
+      function highlightNavOnScroll() {
+        let currentSectionId = 'hero';
         sections.forEach(section => {
-            observer.observe(section);
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          if (window.scrollY >= sectionTop - 150) {
+            currentSectionId = section.getAttribute('id');
+          }
         });
-    </script>
+
+        navLinks.forEach(link => {
+          link.classList.remove('active', 'text-brand-500', 'dark:text-white');
+          if (link.getAttribute('href') === `#${currentSectionId}`) {
+            link.classList.add('active', 'text-brand-500', 'dark:text-white');
+          }
+        });
+      }
+
+
+      // --- TESTIMONIALS SLIDER INTERACTIVE ---
+      const slides = document.querySelectorAll('.testimonial-slide');
+      const indicators = document.querySelectorAll('.indicator');
+      const prevBtn = document.getElementById('prev-test');
+      const nextBtn = document.getElementById('next-test');
+      let currentSlide = 0;
+
+      function updateSlides() {
+        slides.forEach((slide, index) => {
+          slide.classList.remove('opacity-100', 'translate-x-0', 'pointer-events-auto');
+          slide.classList.add('opacity-0', 'translate-x-full', 'pointer-events-none');
+          
+          if (index === currentSlide) {
+            slide.classList.remove('opacity-0', 'translate-x-full', 'pointer-events-none');
+            slide.classList.add('opacity-100', 'translate-x-0', 'pointer-events-auto');
+          }
+        });
+
+        indicators.forEach((indicator, index) => {
+          if (index === currentSlide) {
+            indicator.className = 'indicator w-2.5 h-2.5 rounded-full bg-brand-500 cursor-pointer';
+          } else {
+            indicator.className = 'indicator w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 cursor-pointer';
+          }
+        });
+      }
+
+      nextBtn.addEventListener('click', () => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateSlides();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        updateSlides();
+      });
+
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+          currentSlide = index;
+          updateSlides();
+        });
+      });
+
+      // Auto rotation for testimonials
+      let autoPlayInterval = setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateSlides();
+      }, 8000);
+
+      // Pause rotation on user action
+      const resetInterval = () => {
+        clearInterval(autoPlayInterval);
+        autoPlayInterval = setInterval(() => {
+          currentSlide = (currentSlide + 1) % slides.length;
+          updateSlides();
+        }, 8000);
+      };
+
+      prevBtn.addEventListener('click', resetInterval);
+      nextBtn.addEventListener('click', resetInterval);
+      indicators.forEach(ind => ind.addEventListener('click', resetInterval));
+
+
+      // --- INTERACTIVE CONTACT FORM SUBMIT ---
+      const contactForm = document.getElementById('contact-form');
+      const contactSuccess = document.getElementById('contact-success');
+      const resetContactBtn = document.getElementById('reset-contact-btn');
+
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Emulate transmission latency
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin mr-2"></i> Submitting...`;
+        
+        setTimeout(() => {
+          contactSuccess.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.innerText = "Submit Inquiry";
+          contactForm.reset();
+        }, 1200);
+      });
+
+      resetContactBtn.addEventListener('click', () => {
+        contactSuccess.classList.add('hidden');
+      });
+
+    });
+  </script>
 </body>
 </html>
